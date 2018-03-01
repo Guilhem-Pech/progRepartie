@@ -44,8 +44,6 @@ int main() {
 	int sock_client;
 
 
-	time_t date;
-
 	cout << "Serveur chat lancé  sur le port " << NUM_PORT << endl;
 
 	for (int i = 1; i <= NB_CLIENTS; i++) {
@@ -54,26 +52,26 @@ int main() {
 		if (sock_client == -1)
 			exitErreur("accept");
       int lu(0);
-      char buffer[250];
+      char buffer[20];
       string msgRecu = "";
-      while (lu = read(sock_client, buffer, sizeof(buffer))) {
-        bool endCom = false;
+      while ((lu = read(sock_client, buffer, sizeof(buffer)))) {
+				bool endCom = false;
         string bufferLu = string(buffer,lu);
         for(char c : bufferLu){
           if (c == '\n'){
             endCom = true;
           }
         }
+				msgRecu += bufferLu;
         if(endCom){
-          cout << bufferLu;
-          string msg;
+          cout << msgRecu << endl;
+					if (msgRecu == "bye\r\n" || msgRecu=="bye\n"){
+						return 0;
+					}
+					string msg;
           getline(cin,msg);
           const char * cmsg = msg.c_str();
           if (write(sock_client, cmsg, strlen(cmsg)) == -1) exitErreur("write");
-          msgRecu = "";
-        } else {
-          msgRecu += bufferLu;
-          if (msgRecu == "bye") return 0;
         }
       }
       close(sock_serveur);
