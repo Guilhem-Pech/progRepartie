@@ -21,12 +21,12 @@ int main(int argc, char const *argv[]) {
   struct sockaddr_in sockaddr_serveur;
   sockaddr_serveur.sin_family = AF_INET;
   sockaddr_serveur.sin_port = htons(50013);//server port
-  sockaddr_serveur.sin_addr.s_addr = inet_addr("139.124.187.164");
+  sockaddr_serveur.sin_addr.s_addr = inet_addr("127.0.0.1");
 
   if(connect(sock_client, (struct sockaddr *) &sockaddr_serveur,sizeof(sockaddr_in)) == -1){
     exitErreur("connect");
   };
-  
+
   char buffer[1];
   string result;
   int nblu(0);
